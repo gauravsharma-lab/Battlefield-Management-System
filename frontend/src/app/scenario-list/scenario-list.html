@@ -1,0 +1,8 @@
+<h2>Scenarios</h2>
+
+<ul>
+  <li *ngFor="let s of scenarios">
+    {{ s.name }}
+    <button (click)="delete(s._id)">Delete</button>
+  </li>
+</ul>

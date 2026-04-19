@@ -1,0 +1,12 @@
+<h2>Assets</h2>
+
+<div style="display:flex; gap:15px; flex-wrap:wrap;">
+  <div *ngFor="let asset of assets" 
+       style="border:1px solid #ccc; padding:15px; width:200px; border-radius:10px;">
+    
+    <h3>{{asset.name}}</h3>
+    <p>Type: {{asset.type}}</p>
+
+    <button (click)="delete(asset._id)">Delete</button>
+  </div>
+</div>

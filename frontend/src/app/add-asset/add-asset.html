@@ -1,0 +1,71 @@
+<h2>Add Military Asset</h2>
+
+<form (ngSubmit)="addAsset()" class="asset-form">
+
+  <!-- NAME -->
+  <div class="form-group">
+    <label>Asset Name</label>
+    <input type="text" [(ngModel)]="asset.name" name="name" placeholder="Enter asset name" required />
+  </div>
+
+  <!-- TYPE -->
+  <div class="form-group">
+    <label>Asset Type</label>
+    <input type="text" [(ngModel)]="asset.type" name="type" placeholder="fighter / bomber / radar..." />
+  </div>
+
+  <!-- TEAM -->
+  <div class="form-group">
+    <label>Team</label>
+    <select [(ngModel)]="asset.team" name="team" required>
+      <option value="friendly">Friendly</option>
+      <option value="enemy">Enemy</option>
+    </select>
+  </div>
+
+  <!-- LATITUDE -->
+  <div class="form-group">
+    <label>Latitude</label>
+    <input type="number" [(ngModel)]="asset.latitude" name="latitude" placeholder="Enter latitude" />
+  </div>
+
+  <!-- LONGITUDE -->
+  <div class="form-group">
+    <label>Longitude</label>
+    <input type="number" [(ngModel)]="asset.longitude" name="longitude" placeholder="Enter longitude" />
+  </div>
+
+  <!-- SPEED -->
+  <div class="form-group">
+    <label>Speed (km/h)</label>
+    <input type="number" [(ngModel)]="asset.speed" name="speed" />
+  </div>
+
+  <!-- FUEL -->
+  <div class="form-group">
+    <label>Fuel (%)</label>
+    <input type="number" [(ngModel)]="asset.fuel" name="fuel" />
+  </div>
+
+  <!-- RADAR RANGE -->
+  <div class="form-group">
+    <label>Radar Range (km)</label>
+    <input type="number" [(ngModel)]="asset.radarRange" name="radarRange" />
+  </div>
+
+  <!-- WEAPON RANGE -->
+  <div class="form-group">
+    <label>Weapon Range (km)</label>
+    <input type="number" [(ngModel)]="asset.weaponRange" name="weaponRange" />
+  </div>
+
+  <!-- STATUS -->
+  <div class="form-group">
+    <label>Status</label>
+    <input type="text" [(ngModel)]="asset.status" name="status" placeholder="active / destroyed" />
+  </div>
+
+  <!-- BUTTON -->
+  <button type="submit">Add Asset</button>
+
+</form>
