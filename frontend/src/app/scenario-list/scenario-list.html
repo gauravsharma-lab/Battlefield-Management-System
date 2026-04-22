@@ -1,8 +1,30 @@
-<h2>Scenarios</h2>
+<h2>Scenario List</h2>
 
-<ul>
-  <li *ngFor="let s of scenarios">
-    {{ s.name }}
-    <button (click)="delete(s._id)">Delete</button>
-  </li>
-</ul>
+<p *ngIf="loading">Loading scenarios...</p>
+
+<div *ngFor="let s of scenarios" style="border:1px solid #ccc; margin:10px; padding:10px;">
+
+  <h3>{{ s.scenarioName }}</h3>
+
+  <p><b>Weather:</b> {{ s.weather }}</p>
+  <p><b>Mission:</b> {{ s.missionType }}</p>
+  <p><b>Terrain:</b> {{ s.terrainType }}</p>
+
+  <!-- Friendly Assets -->
+  <p><b>Friendly Assets:</b></p>
+  <ul>
+    <li *ngFor="let a of s.friendlyAssets">
+      {{ a.name }} ({{ a.type }})
+    </li>
+  </ul>
+
+  <!-- Enemy Assets -->
+  <p><b>Enemy Assets:</b></p>
+  <ul>
+    <li *ngFor="let a of s.enemyAssets">
+      {{ a.name }} ({{ a.type }})
+    </li>
+  </ul>
+
+  <button (click)="delete(s._id)">Delete</button>
+</div>

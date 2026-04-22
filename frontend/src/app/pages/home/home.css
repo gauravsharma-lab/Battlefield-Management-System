@@ -1,0 +1,101 @@
+/* HERO SECTION */
+.hero {
+  height: 90vh;
+  background: url('/battlefield.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.65);
+  padding: 60px;
+  text-align: center;
+  border-radius: 12px;
+  color: white;
+  backdrop-filter: blur(5px);
+}
+
+.overlay h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.overlay p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 12px 30px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: 0.3s ease;
+}
+
+.primary {
+  background: #007bff;
+  color: white;
+}
+
+.secondary {
+  background: #28a745;
+  color: white;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* FEATURES SECTION */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 50px;
+  background: #f5f5f5;
+}
+
+.card {
+  width: 250px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+/* ANIMATIONS */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+.delay {
+  animation-delay: 0.5s;
+}
+
+.delay-2 {
+  animation-delay: 1s;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+

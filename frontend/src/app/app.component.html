@@ -1,0 +1,19 @@
+<nav class="navbar">
+
+  <!-- ALWAYS -->
+  <a routerLink="/">Home</a>
+
+  <!-- NOT LOGGED IN -->
+  <span *ngIf="!auth.isLoggedIn()">
+    <a routerLink="/login">Login</a>
+    <a routerLink="/signup">Signup</a>
+  </span>
+
+  <!-- LOGGED IN -->
+  <span *ngIf="auth.isLoggedIn()">
+    <button (click)="logout()">Logout</button>
+  </span>
+
+</nav>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,33 @@
+<div class="hero">
+  <div class="overlay">
+    <h1 class="fade-in">Battlefield Management System</h1>
+    <p class="fade-in delay">
+      Manage assets and simulate real-time battlefield scenarios
+    </p>
+
+  <div class="buttons fade-in delay-2" *ngIf="!auth.isLoggedIn()">
+  <a routerLink="/login" class="btn primary">Login</a>
+  <a routerLink="/signup" class="btn secondary">Signup</a>
+</div>
+  </div>
+</div>
+
+<!-- FEATURES SECTION -->
+<div class="features">
+
+  <div class="card">
+    <h3>Asset Management</h3>
+    <p>Create, edit and track all battlefield units in real-time.</p>
+  </div>
+
+  <div class="card">
+    <h3>Scenario Builder</h3>
+    <p>Design complex missions with friendly and enemy forces.</p>
+  </div>
+
+  <div class="card">
+    <h3>Simulation Ready</h3>
+    <p>Prepare scenarios for realistic battlefield simulations.</p>
+  </div>
+
+</div>

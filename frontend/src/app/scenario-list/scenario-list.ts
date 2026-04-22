@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScenarioService } from '../services/scenario';
 
+
 @Component({
   selector: 'app-scenario-list',
   standalone: true,
@@ -11,6 +12,7 @@ import { ScenarioService } from '../services/scenario';
 export class ScenarioList implements OnInit {
 
   scenarios: any[] = [];
+  loading = false;   // 👈 ADD HERE
 
   constructor(private scenarioService: ScenarioService) {}
 
@@ -18,15 +20,22 @@ export class ScenarioList implements OnInit {
     this.loadScenarios();
   }
 
-  loadScenarios() {
-    this.scenarioService.getScenarios().subscribe(data => {
-      this.scenarios = data;
-    });
-  }
+ loadScenarios() {
+  this.loading = true;
+
+  this.scenarioService.getScenarios().subscribe(data => {
+    this.scenarios = data;
+    this.loading = false;
+  });
+}
 
   delete(id: string) {
+  const confirmDelete = confirm('Are you sure you want to delete this scenario?');
+
+  if (confirmDelete) {
     this.scenarioService.deleteScenario(id).subscribe(() => {
       this.loadScenarios();
     });
   }
+}
 }

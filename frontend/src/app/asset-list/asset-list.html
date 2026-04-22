@@ -1,12 +1,21 @@
-<h2>Assets</h2>
+<h2 style="text-align:center;">Assets</h2>
 
-<div style="display:flex; gap:15px; flex-wrap:wrap;">
-  <div *ngFor="let asset of assets" 
-       style="border:1px solid #ccc; padding:15px; width:200px; border-radius:10px;">
-    
-    <h3>{{asset.name}}</h3>
-    <p>Type: {{asset.type}}</p>
+<!-- DEBUG (keep temporarily) -->
+<p>{{ assets.length }}</p>
 
-    <button (click)="delete(asset._id)">Delete</button>
+<div class="card-container">
+
+  <div class="card" *ngFor="let asset of assets">
+
+    <h3>{{ asset.name }}</h3>
+
+    <p>Type: {{ asset.type }}</p>
+    <p>Team: {{ asset.team }}</p>
+    <p>Status: {{ asset.status }}</p>
+
+    <button (click)="editAsset(asset)">Edit</button>
+    <button (click)="deleteAsset(asset._id)">Delete</button>
+
   </div>
+
 </div>
