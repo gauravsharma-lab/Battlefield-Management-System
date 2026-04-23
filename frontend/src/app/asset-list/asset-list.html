@@ -1,101 +1,107 @@
-<h2 class="title">📦 Battlefield Assets</h2>
+<div class="asset-container">
+  <div class="asset-header">
+    <div class="header-left">
+      <h2 class="title">Battlefield Assets</h2>
+      <p class="count">Total Assets: {{ assets.length }}</p>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-primary" routerLink="/add-asset">
+        + Create New Asset
+      </button>
+    </div>
+  </div>
 
-<p class="count">Total Assets: {{ assets.length }}</p>
-
-<div class="grid">
-
-  <div class="card" *ngFor="let asset of assets">
-
-    <div class="card-header">
-      <h3>{{ asset.name }}</h3>
-
-      <span class="badge" [ngClass]="asset.team">
-        {{ asset.team }}
-      </span>
+  <!-- SEARCH & FILTERS -->
+  <div class="filter-panel">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search by asset name...">
     </div>
 
-    <div class="card-body">
-      <p><b>Type:</b> {{ asset.type }}</p>
-      <p><b>Status:</b> {{ asset.status }}</p>
+    <div class="select-filters">
+      <select [(ngModel)]="selectedType">
+        <option value="">All Types</option>
+        <option *ngFor="let type of assetTypes" [value]="type">{{ type | titlecase }}</option>
+      </select>
 
-      <div class="stats">
-        <span>🔥 Fuel: {{ asset.fuel }}</span>
-        <span>⚡ Speed: {{ asset.speed }}</span>
+      <select [(ngModel)]="selectedTeam">
+        <option value="">All Teams</option>
+        <option value="friendly">Friendly Only</option>
+        <option value="enemy">Enemy Only</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- FRIENDLY FORCES SECTION -->
+  <div class="team-section" *ngIf="friendlyAssets.length > 0">
+    <h2 class="section-title friendly">🛡️ Friendly Forces ({{ friendlyAssets.length }})</h2>
+    <div class="asset-grid">
+      <div class="asset-card" *ngFor="let asset of friendlyAssets">
+        <div class="card-header">
+          <h3>{{ asset.name }}</h3>
+          <span class="badge friendly">Friendly</span>
+        </div>
+        <div class="card-body">
+          <div class="detail-row">
+            <span class="label">Type:</span>
+            <span class="value">{{ asset.type | titlecase }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Status:</span>
+            <span class="value status-active">{{ asset.status | titlecase }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Location:</span>
+            <span class="value">{{ asset.latitude }}, {{ asset.longitude }}</span>
+          </div>
+          <div class="progress-stats">
+            <div class="stat">
+              <span>Fuel: {{ asset.fuel }}%</span>
+              <div class="progress-bar"><div class="progress" [style.width.%]="asset.fuel"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-icon edit" (click)="editAsset(asset._id)" title="Edit">✏️</button>
+          <button class="btn-icon delete" (click)="deleteAsset(asset._id)" title="Delete">🗑️</button>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="card-footer">
-      <button class="edit" (click)="editAsset(asset)">Edit</button>
-      <button class="delete" (click)="deleteAsset(asset._id)">Delete</button>
+  <!-- ENEMY FORCES SECTION -->
+  <div class="team-section" *ngIf="enemyAssets.length > 0">
+    <h2 class="section-title enemy">🚩 Enemy Forces ({{ enemyAssets.length }})</h2>
+    <div class="asset-grid">
+      <div class="asset-card" *ngFor="let asset of enemyAssets">
+        <div class="card-header">
+          <h3>{{ asset.name }}</h3>
+          <span class="badge enemy">Enemy</span>
+        </div>
+        <div class="card-body">
+          <div class="detail-row">
+            <span class="label">Type:</span>
+            <span class="value">{{ asset.type | titlecase }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Status:</span>
+            <span class="value">{{ asset.status | titlecase }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">Location:</span>
+            <span class="value">{{ asset.latitude }}, {{ asset.longitude }}</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-icon edit" (click)="editAsset(asset._id)">✏️</button>
+          <button class="btn-icon delete" (click)="deleteAsset(asset._id)">🗑️</button>
+        </div>
+      </div>
     </div>
-
   </div>
 
-</div>
-
-<!-- EDIT PANEL -->
-<div class="edit-panel" *ngIf="selectedAsset">
-
-  <h3>Edit Asset ✏️</h3>
-
-  <!-- NAME -->
-  <input type="text"
-         [(ngModel)]="selectedAsset.name"
-         name="editName"
-         placeholder="Name" />
-
-  <!-- TYPE (DROPDOWN) -->
-  <select [(ngModel)]="selectedAsset.type" name="editType">
-    <option value="fighter">Fighter</option>
-    <option value="bomber">Bomber</option>
-    <option value="radar">Radar</option>
-    <option value="sam">SAM</option>
-    <option value="airbase">Airbase</option>
-    <option value="enemy_aircraft">Enemy Aircraft</option>
-  </select>
-
-  <!-- TEAM -->
-  <select [(ngModel)]="selectedAsset.team" name="editTeam">
-    <option value="friendly">Friendly</option>
-    <option value="enemy">Enemy</option>
-  </select>
-
-  <!-- LAT -->
-  <input type="number"
-         [(ngModel)]="selectedAsset.latitude"
-         name="editLat"
-         placeholder="Latitude" />
-
-  <!-- LNG -->
-  <input type="number"
-         [(ngModel)]="selectedAsset.longitude"
-         name="editLng"
-         placeholder="Longitude" />
-
-  <!-- SPEED -->
-  <input type="number"
-         [(ngModel)]="selectedAsset.speed"
-         name="editSpeed"
-         placeholder="Speed" />
-
-  <!-- FUEL -->
-  <input type="number"
-         [(ngModel)]="selectedAsset.fuel"
-         name="editFuel"
-         placeholder="Fuel" />
-
-  <!-- STATUS (DROPDOWN) -->
-  <select [(ngModel)]="selectedAsset.status" name="editStatus">
-    <option value="active">Active</option>
-    <option value="destroyed">Destroyed</option>
-    <option value="damaged">Damaged</option>
-    <option value="hidden">Hidden</option>
-  </select>
-
-  <!-- ACTIONS -->
-  <div class="actions">
-    <button (click)="updateAsset()">Update</button>
-    <button (click)="selectedAsset = null">Cancel</button>
+  <!-- EMPTY STATE -->
+  <div class="empty-state" *ngIf="filteredAssets.length === 0 && assets.length > 0">
+    <p>No assets match your search or filters.</p>
   </div>
-
 </div>

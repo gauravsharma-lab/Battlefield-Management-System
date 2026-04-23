@@ -1,83 +1,107 @@
 .container {
-  display: flex;
-  justify-content: center;
-  padding: 30px;
-  background: #0f172a;
-  min-height: 100vh;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
 .card {
-  background: #1e293b;
-  padding: 30px;
-  border-radius: 12px;
-  width: 600px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-  color: white;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f3f4f6;
 }
 
 h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 30px;
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 24px;
 }
 
 label {
-  font-size: 14px;
   display: block;
-  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
 }
 
-input, select {
+input, select, textarea {
   width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-  background: #334155;
-  color: white;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  transition: all 0.2s;
+  background: #f9fafb;
 }
 
-input::placeholder {
-  color: #94a3b8;
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 20px;
 }
 
 .assets-section {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #f3f4f6;
 }
 
-.asset-box {
-  flex: 1;
+.asset-box h4 {
+  margin-bottom: 12px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.asset-box select {
-  height: 120px;
+select[multiple] {
+  height: 150px;
 }
 
 .btn {
   width: 100%;
-  margin-top: 20px;
-  padding: 12px;
-  background: linear-gradient(45deg, #3b82f6, #06b6d4);
-  border: none;
-  border-radius: 8px;
+  margin-top: 30px;
+  background: #111827;
+  color: white;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 700;
   font-size: 16px;
   cursor: pointer;
-  color: white;
-  transition: 0.3s;
+  border: none;
+  transition: all 0.2s;
 }
 
 .btn:hover {
-  transform: scale(1.05);
-  background: linear-gradient(45deg, #2563eb, #0891b2);
+  background: #1f2937;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cancel {
+  width: 100%;
+  margin-top: 10px;
+  background: transparent;
+  color: #6b7280;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
 }

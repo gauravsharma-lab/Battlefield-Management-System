@@ -1,1 +1,75 @@
-<pre>{{ scenarios | json }}</pre>
+<div class="scenario-container">
+  <div class="scenario-header">
+    <div class="header-left">
+      <h2 class="title">Battlefield Scenarios</h2>
+      <p class="count">Total Scenarios: {{ scenarios.length }}</p>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-primary" routerLink="/add-scenario">
+        + Create New Scenario
+      </button>
+    </div>
+  </div>
+
+  <!-- SEARCH & FILTERS -->
+  <div class="filter-panel">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search scenarios by name...">
+    </div>
+
+    <div class="select-filters">
+      <select [(ngModel)]="selectedWeather">
+        <option value="">All Weathers</option>
+        <option *ngFor="let w of weathers" [value]="w">{{ w }}</option>
+      </select>
+
+      <select [(ngModel)]="selectedMission">
+        <option value="">All Missions</option>
+        <option *ngFor="let m of missions" [value]="m">{{ m }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- SCENARIO GRID -->
+  <div class="scenario-grid">
+    <div class="scenario-card" *ngFor="let s of filteredScenarios">
+      <div class="card-header">
+        <div class="card-title-group">
+          <h3>{{ s.scenarioName }}</h3>
+          <span class="mission-badge">{{ s.missionType | titlecase }}</span>
+        </div>
+        <span class="weather-icon" [title]="s.weather">
+          {{ s.weather === 'Clear' ? '☀️' : s.weather === 'Fog' ? '🌫️' : s.weather === 'Rain' ? '🌧️' : '🌩️' }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <div class="info-row">
+          <span class="label">Weather:</span>
+          <span class="value">{{ s.weather | titlecase }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Terrain:</span>
+          <span class="value">{{ s.terrainType | titlecase }}</span>
+        </div>
+        <p class="description">{{ s.description || 'Strategic battlefield operation.' }}</p>
+        
+        <div class="asset-count-tags">
+          <span class="tag friendly">{{ s.friendlyAssets?.length || 0 }} Friendly</span>
+          <span class="tag enemy">{{ s.enemyAssets?.length || 0 }} Enemy</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-action edit" (click)="editScenario(s._id)">Edit</button>
+        <button class="btn-action delete" (click)="delete(s._id)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" *ngIf="filteredScenarios.length === 0">
+    <p>No scenarios match your search or filters.</p>
+  </div>
+</div>

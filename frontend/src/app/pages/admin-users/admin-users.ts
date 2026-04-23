@@ -1,34 +1,61 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminService } from '../../services/admin';
+import { FormsModule } from '@angular/forms';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-admin-users',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-users.html',
   styleUrl: './admin-users.css',
 })
 export class AdminUsers implements OnInit {
 
   users: any[] = [];
+  selectedUser: any = null;
 
-  constructor(private adminService: AdminService) {}
+  constructor(private api: ApiService) {}
 
   ngOnInit() {
     this.loadUsers();
   }
 
   loadUsers() {
-    this.adminService.getUsers().subscribe((data: any) => {
-      this.users = data;
+    this.api.getAllUsers().subscribe({
+      next: (data: any) => {
+        this.users = data;
+      },
+      error: (err) => {
+        console.error("Admin Access Error:", err);
+      }
     });
   }
 
-  delete(id: string) {
-    if (confirm('Delete this user?')) {
-      this.adminService.deleteUser(id).subscribe(() => {
+  editUser(user: any) {
+    this.selectedUser = { ...user };
+  }
+
+  updateUser() {
+    if (!this.selectedUser) return;
+
+    this.api.updateUser(this.selectedUser._id, this.selectedUser).subscribe({
+      next: () => {
+        alert("User updated successfully! ✅");
+        this.selectedUser = null;
         this.loadUsers();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  deleteUser(id: string) {
+    if (confirm('⚠️ Are you sure you want to delete this user? This cannot be undone.')) {
+      this.api.deleteUser(id).subscribe({
+        next: () => {
+          this.loadUsers();
+        },
+        error: (err) => console.error(err)
       });
     }
   }

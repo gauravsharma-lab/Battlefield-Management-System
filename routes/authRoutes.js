@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
         role: user.role
       },
       'secretkey',
-      { expiresIn: '1h' }
+      { expiresIn: '24h' }
     );
 
     res.json({

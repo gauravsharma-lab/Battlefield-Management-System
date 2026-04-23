@@ -9,11 +9,14 @@ const authRoutes = require('./routes/authRoutes');
 
 const assetRoutes = require("./routes/assetRoutes");
 const scenarioRoutes = require("./routes/ScenarioRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:4200"
+  origin: "http://localhost:4200",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
@@ -25,6 +28,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/battlefield")
 app.use("/api/assets", assetRoutes);
 app.use("/api/scenarios", scenarioRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend Running 🚀");

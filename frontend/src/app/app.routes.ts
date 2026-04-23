@@ -25,6 +25,7 @@ export const routes: Routes = [
 
   { path: 'assets', component: AssetList, canActivate: [authGuard] },
   { path: 'add-asset', component: AddAsset, canActivate: [authGuard] },
+  { path: 'add-asset/:id', component: AddAsset, canActivate: [authGuard] },
   { path: 'scenarios', component: ScenarioList, canActivate: [authGuard] },
   { path: 'add-scenario', component: AddScenario, canActivate: [authGuard] },
   { path: 'add-scenario/:id', component: AddScenario },

@@ -1,19 +1,35 @@
 <nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand" routerLink="/">🛡️ Battlefield MS</div>
+    
+    <div class="nav-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">Home</a>
+      
+      <ng-container *ngIf="auth.isLoggedIn()">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">Dashboard</a>
+        <a routerLink="/assets" routerLinkActive="active" class="nav-item">Assets</a>
+        <a routerLink="/scenarios" routerLinkActive="active" class="nav-item">Scenarios</a>
+      </ng-container>
 
-  <!-- ALWAYS -->
-  <a routerLink="/">Home</a>
+      <a routerLink="/admin/users" *ngIf="auth.isAdmin()" routerLinkActive="active" class="nav-item admin">Admin Panel</a>
+    </div>
 
-  <!-- NOT LOGGED IN -->
-  <span *ngIf="!auth.isLoggedIn()">
-    <a routerLink="/login">Login</a>
-    <a routerLink="/signup">Signup</a>
-  </span>
+    <div class="nav-auth">
+      <!-- NOT LOGGED IN -->
+      <ng-container *ngIf="!auth.isLoggedIn()">
+        <a routerLink="/login" class="nav-btn login">Login</a>
+        <a routerLink="/signup" class="nav-btn signup">Sign up</a>
+      </ng-container>
 
-  <!-- LOGGED IN -->
-  <span *ngIf="auth.isLoggedIn()">
-    <button (click)="logout()">Logout</button>
-  </span>
-
+      <!-- LOGGED IN -->
+      <div class="user-info" *ngIf="auth.isLoggedIn()">
+        <span class="user-name">{{ auth.getUser()?.name || auth.getUser()?.email }}</span>
+        <button (click)="logout()" class="btn-logout">Logout</button>
+      </div>
+    </div>
+  </div>
 </nav>
 
-<router-outlet></router-outlet>
+<main class="content">
+  <router-outlet></router-outlet>
+</main>

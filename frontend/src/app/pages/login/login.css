@@ -43,6 +43,38 @@ body {
   border-color: #2563eb;
 }
 
+.password-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.eye-btn {
+  position: absolute !important;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #6366f1; /* 👈 Color the icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.eye-btn svg {
+  stroke: #64748b;
+  transition: stroke 0.2s;
+}
+
+.eye-btn:hover svg {
+  stroke: #6366f1;
+}
+
 .auth-card button {
   width: 100%;
   padding: 10px;

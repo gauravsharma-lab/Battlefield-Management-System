@@ -8,16 +8,13 @@ const authMiddleware = require("../middleware/auth");
 // ✅ CREATE SCENARIO
 router.post("/", authMiddleware, async (req, res) => {
   try {
-
     const scenario = new Scenario({
       ...req.body,
-      userId: req.user.userId   // ✅ IMPORTANT FIX
+      userId: req.user.userId 
     });
 
     await scenario.save();
-
     res.status(201).json(scenario);
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -27,16 +24,8 @@ router.post("/", authMiddleware, async (req, res) => {
 // ✅ GET USER SCENARIOS
 router.get("/", authMiddleware, async (req, res) => {
   try {
-
-    console.log("🔥 LOGGED USER:", req.user);
-
-    const scenarios = await Scenario.find({
-      userId: req.user.userId
-    });
-
-    console.log("🔥 FOUND:", scenarios);
-
-    res.json(scenarios);
+    const filtered = await Scenario.find({ userId: req.user.userId });
+    res.json(filtered);
 
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -69,12 +58,26 @@ router.get("/:id", authMiddleware, async (req, res) => {
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
 
+    const updateData = { ...req.body };
+    delete updateData.userId; // Prevent override
+
     const updated = await Scenario.findOneAndUpdate(
       {
         _id: req.params.id,
-        userId: req.user.userId   // ✅ FIXED
+        userId: req.user.userId
       },
-      req.body,
+      { 
+        $set: {
+          scenarioName: req.body.scenarioName,
+          weather: req.body.weather,
+          missionType: req.body.missionType,
+          terrainType: req.body.terrainType,
+          description: req.body.description,
+          friendlyAssets: req.body.friendlyAssets,
+          enemyAssets: req.body.enemyAssets,
+          // userId is EXPLICITLY NOT IN THE SET
+        }
+      },
       { new: true }
     );
 

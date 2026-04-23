@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { ApiService } from '../services/api.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-scenario-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './scenario-list.html',
   styleUrls: ['./scenario-list.css'],
 })
@@ -14,51 +15,57 @@ export class ScenarioList implements OnInit {
 
   scenarios: any[] = [];
 
-  constructor(private http: HttpClient, private router: Router) {}
+  // Search & Filter State
+  searchTerm: string = '';
+  selectedWeather: string = '';
+  selectedMission: string = '';
+
+  weathers = ['Clear', 'Fog', 'Rain', 'Storm'];
+  missions = ['Interception', 'Patrol', 'Escort', 'Strike'];
+
+  constructor(
+    private api: ApiService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
-  this.loadScenarios();
-}
+    this.loadScenarios();
+  }
 
-loadScenarios() {
-  this.http.get<any[]>('http://localhost:5000/api/scenarios')
-    .subscribe({
-      next: (res) => {
-        console.log("🔥 API DATA:", res);
-
-        this.scenarios = res; // 👈 keep it simple
-
-        console.log("FINAL LENGTH:", this.scenarios.length);
+  loadScenarios() {
+    this.api.getScenarios().subscribe({
+      next: (res: any) => {
+        this.scenarios = res || [];
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error("❌ API ERROR:", err);
-        this.scenarios = []; // fallback
+        console.error("FETCH ERROR:", err);
+        if (err.status === 401) {
+          this.router.navigate(['/login']);
+        }
       }
     });
-}
-  // ✏️ EDIT (navigate to Add/Edit page)
+  }
+
+  // ✅ Computed: Filtered Scenarios
+  get filteredScenarios() {
+    return this.scenarios.filter(s => {
+      const matchSearch = s.scenarioName.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchWeather = !this.selectedWeather || s.weather.toLowerCase() === this.selectedWeather.toLowerCase();
+      const matchMission = !this.selectedMission || s.missionType.toLowerCase() === this.selectedMission.toLowerCase();
+      return matchSearch && matchWeather && matchMission;
+    });
+  }
+
   editScenario(id: string) {
     this.router.navigate(['/add-scenario', id]);
   }
 
-  // 🗑️ DELETE with token[]
   delete(id: string) {
     if (!confirm('Are you sure?')) return;
-
-    const token = localStorage.getItem('token');
-
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
-
-    this.http.delete(
-      `http://localhost:5000/api/scenarios/${id}`,
-      { headers }
-    ).subscribe({
-      next: () => {
-        alert('🗑️ Deleted');
-        this.loadScenarios();
-      },
+    this.api.deleteScenario(id).subscribe({
+      next: () => this.loadScenarios(),
       error: (err) => console.error(err)
     });
   }

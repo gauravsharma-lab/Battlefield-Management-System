@@ -75,4 +75,17 @@ export class ApiService {
   deleteScenario(id: string) {
     return this.http.delete(`${this.baseUrl}/scenarios/${id}`, this.getAuthHeaders());
   }
+
+  // ===== ADMIN =====
+  getAllUsers() {
+    return this.http.get(`${this.baseUrl}/admin/users`, this.getAuthHeaders());
+  }
+
+  updateUser(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/admin/users/${id}`, data, this.getAuthHeaders());
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(`${this.baseUrl}/admin/users/${id}`, this.getAuthHeaders());
+  }
 }

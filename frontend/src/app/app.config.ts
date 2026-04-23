@@ -1,17 +1,14 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { routes } from './app.routes';
+import { AuthInterceptor } from './auth-interceptor';
 
-export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-    return next(req);
-  }
-
-  const clonedReq = req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  return next(clonedReq);
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(
+      withInterceptors([AuthInterceptor])
+    )
+  ]
 };

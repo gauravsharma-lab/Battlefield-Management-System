@@ -1,27 +1,21 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler
-} from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
+  console.log("--- INTERCEPTOR TRIGGERED ---");
+  const token = localStorage.getItem('token');
+  console.log("LOCALSTORAGE TOKEN FOUND:", token);
 
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      const cloned = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      return next.handle(cloned);
-    }
-
-    return next.handle(req);
+  if (token) {
+    console.log("ADDING HEADER TO REQUEST...");
+    const clonedReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return next(clonedReq);
   }
-}
+
+  console.warn("NO TOKEN FOUND - SENDING REQUEST WITHOUT AUTH HEADER");
+  return next(req);
+};

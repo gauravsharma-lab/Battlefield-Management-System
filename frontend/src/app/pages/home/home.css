@@ -31,29 +31,45 @@
   display: flex;
   gap: 20px;
   justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
 }
 
 .btn {
-  padding: 12px 30px;
+  display: inline-block;
+  padding: 14px 36px;
   text-decoration: none;
-  font-weight: bold;
-  border-radius: 6px;
-  transition: 0.3s ease;
+  font-weight: 700;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .primary {
-  background: #007bff;
+  background: #6366f1; /* Matching sidebar theme */
   color: white;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
 .secondary {
-  background: #28a745;
+  background: rgba(255, 255, 255, 0.1);
   color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .btn:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.primary:hover {
+  background: #4f46e5;
+}
+
+.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* FEATURES SECTION */

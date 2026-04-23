@@ -1,79 +1,71 @@
 <div class="admin-container">
+  
+  <header>
+    <h1>🛡️ Command Center: User Management</h1>
+    <p>Total Registered Personnel: {{ users.length }}</p>
+  </header>
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <h2>Admin Panel</h2>
-
-    <a routerLink="/admin/dashboard">Dashboard</a>
-    <a routerLink="/admin/users">Users</a>
-    <a routerLink="/assets">Assets</a>
-    <a routerLink="/scenarios">Scenarios</a>
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>User Info</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Joined</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>
+            <div class="user-name">{{ user.username }}</div>
+            <div class="user-id">ID: {{ user._id }}</div>
+          </td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span class="role-badge" [ngClass]="user.role">
+              {{ user.role }}
+            </span>
+          </td>
+          <td>{{ user.createdAt | date:'shortDate' }}</td>
+          <td class="actions">
+            <button class="btn-edit" (click)="editUser(user)">Edit</button>
+            <button class="btn-delete" (click)="deleteUser(user._id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <!-- MAIN CONTENT -->
-  <div class="main-content">
-
-    <div class="header">
-      Admin Dashboard
-    </div>
-
-    <!-- STATS CARDS -->
-    <div class="card-grid">
-
-      <div class="card">
-        <h3>Total Users</h3>
-        <p>120</p>
+  <!-- EDIT MODAL / OVERLAY -->
+  <div class="modal-overlay" *ngIf="selectedUser">
+    <div class="modal">
+      <h3>Edit Personnel Data</h3>
+      
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="selectedUser.username" />
       </div>
 
-      <div class="card">
-        <h3>Active Assets</h3>
-        <p>45</p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="selectedUser.email" />
       </div>
 
-      <div class="card">
-        <h3>Scenarios</h3>
-        <p>18</p>
+      <div class="form-group">
+        <label>Access Role</label>
+        <select [(ngModel)]="selectedUser.role">
+          <option value="user">User (Standard)</option>
+          <option value="admin">Admin (Full Access)</option>
+        </select>
       </div>
 
+      <div class="modal-actions">
+        <button class="btn-save" (click)="updateUser()">Update User</button>
+        <button class="btn-cancel" (click)="selectedUser = null">Cancel</button>
+      </div>
     </div>
-
-    <!-- TABLE -->
-    <div class="table-container">
-
-      <h3>User List</h3>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>Gaurav</td>
-            <td>gaurav@gmail.com</td>
-            <td>Admin</td>
-            <td>
-              <button class="btn btn-danger">Delete</button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>John</td>
-            <td>john@gmail.com</td>
-            <td>User</td>
-            <td>
-              <button class="btn btn-danger">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-
-      </table>
-    </div>
-
   </div>
+
 </div>
