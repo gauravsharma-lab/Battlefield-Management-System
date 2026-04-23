@@ -1,47 +1,70 @@
-console.log("Asset routes loaded ✅");
 const express = require("express");
 const router = express.Router();
 const Asset = require("../models/Asset");
+const authMiddleware = require("../middleware/auth");
 
-// CREATE asset
-router.post("/", async (req, res) => {
-  const asset = new Asset(req.body);
-  await asset.save();
-  res.json(asset);
-});
-
-// GET all assets
-router.get("/", async (req, res) => {
-  const assets = await Asset.find();
-  res.json(assets);
-});
-
-//get by id
-router.get("/:id", async (req, res) => {
-  const asset = await Asset.findById(req.params.id);
-  res.json(asset);
-});
-
-//update api
-router.put("/:id", async (req, res) => {
+// 🔥 CREATE ASSET
+router.post("/", authMiddleware, async (req, res) => {
   try {
-    const updated = await Asset.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updated);
+    console.log("REQ BODY:", req.body);
+    console.log("USER:", req.user);
+
+    const asset = new Asset({
+      ...req.body,
+      userId: req.user.userId
+    });
+
+    const saved = await asset.save();
+    res.status(201).json(saved);
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.log("SAVE ERROR:", err.message);
+
+    res.status(400).json({
+      message: "Invalid asset data",
+      error: err.message
+    });
   }
 });
-//delete api
-router.delete("/:id", async (req, res) => {
+
+// 🔥 GET USER ASSETS
+router.get("/", authMiddleware, async (req, res) => {
   try {
-    await Asset.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted successfully" });
+    console.log("GET USER:", req.user.userId);
+
+    const assets = await Asset.find({
+      userId: req.user.userId
+    });
+
+    console.log("FOUND ASSETS:", assets.length);
+
+    res.json(assets);
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.log("FETCH ERROR:", err.message);
+
+    res.status(500).json({
+      message: "Failed to fetch assets",
+      error: err.message
+    });
   }
+});
+
+
+router.put("/:id", authMiddleware, async (req, res) => {
+  const updated = await Asset.findOneAndUpdate(
+    {
+      _id: req.params.id,
+      userId: req.user.userId
+    },
+    { $set: req.body },
+    { new: true }
+  );
+
+  if (!updated) {
+    return res.status(404).json({ message: "Asset not found" });
+  }
+
+  res.json(updated);
 });
 module.exports = router;

@@ -1,1 +1,84 @@
-<p>add-scenario works!</p>
+<div class="container">
+
+  <div class="card">
+    <h2>🚀 Create Scenario</h2>
+
+    <form (ngSubmit)="addScenario()" class="form">
+
+      <!-- Scenario Name -->
+      <div class="form-group">
+        <label>Scenario Name</label>
+        <input type="text"
+               [(ngModel)]="scenario.scenarioName"
+               name="scenarioName"
+               placeholder="Enter scenario name"
+               required />
+      </div>
+
+      <!-- Grid Section -->
+      <div class="grid">
+
+        <div class="form-group">
+          <label>Weather</label>
+          <select [(ngModel)]="scenario.weather" name="weather">
+            <option value="clear">Clear</option>
+            <option value="fog">Fog</option>
+            <option value="rain">Rain</option>
+            <option value="storm">Storm</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Mission Type</label>
+          <select [(ngModel)]="scenario.missionType" name="missionType">
+            <option value="interception">Interception</option>
+            <option value="attack">Attack</option>
+            <option value="defense">Defense</option>
+            <option value="recon">Recon</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Terrain</label>
+          <select [(ngModel)]="scenario.terrainType" name="terrainType">
+            <option value="desert">Desert</option>
+            <option value="mountain">Mountain</option>
+            <option value="urban">Urban</option>
+            <option value="sea">Sea</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Assets Section -->
+      <div class="assets-section">
+
+        <div class="asset-box">
+          <h4>🟢 Friendly Assets</h4>
+          <select multiple [(ngModel)]="scenario.friendlyAssets" name="friendlyAssets">
+            <option *ngFor="let a of assets" [value]="a._id">
+              {{ a.name }} ({{ a.type }})
+            </option>
+          </select>
+        </div>
+
+        <div class="asset-box">
+          <h4>🔴 Enemy Assets</h4>
+          <select multiple [(ngModel)]="scenario.enemyAssets" name="enemyAssets">
+            <option *ngFor="let a of assets" [value]="a._id">
+              {{ a.name }} ({{ a.type }})
+            </option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Button -->
+      <button type="submit" class="btn">
+        Create Scenario
+      </button>
+
+    </form>
+  </div>
+
+</div>

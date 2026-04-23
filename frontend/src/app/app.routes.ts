@@ -27,6 +27,7 @@ export const routes: Routes = [
   { path: 'add-asset', component: AddAsset, canActivate: [authGuard] },
   { path: 'scenarios', component: ScenarioList, canActivate: [authGuard] },
   { path: 'add-scenario', component: AddScenario, canActivate: [authGuard] },
+  { path: 'add-scenario/:id', component: AddScenario },
 
   // 🔐 Admin (still basic protection)
   { path: 'admin/users', component: AdminUsers, canActivate: [authGuard] },

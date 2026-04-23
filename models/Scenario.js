@@ -1,18 +1,49 @@
 const mongoose = require("mongoose");
 
-const scenarioSchema = new mongoose.Schema({
-  scenarioName: { type: String, required: true },
-  weather: { type: String, required: true },
-  missionType: { type: String, required: true },
-  terrainType: { type: String, required: true },
+const scenarioSchema = new mongoose.Schema(
+  {
+    scenarioName: { type: String, required: true },
 
-  friendlyAssets: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "Asset" }
-  ],
+    weather: {
+      type: String,
+      enum: ["clear", "fog", "rain", "storm"],
+      default: "clear",
+    },
 
-  enemyAssets: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "Asset" }
-  ]
-}, { timestamps: true });
+    missionType: {
+      type: String,
+      enum: ["interception", "attack", "defense", "recon"],
+      required: true,
+    },
+
+    terrainType: {
+      type: String,
+      enum: ["desert", "mountain", "urban", "sea"],
+      required: true,
+    },
+
+    friendlyAssets: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Asset",
+      },
+    ],
+
+    enemyAssets: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Asset",
+      },
+    ],
+
+    // 🔥 ADD THIS (same as Asset)
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Scenario", scenarioSchema);

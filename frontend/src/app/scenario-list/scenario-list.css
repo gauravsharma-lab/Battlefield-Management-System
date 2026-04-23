@@ -1,0 +1,123 @@
+/* Title */
+.title {
+  text-align: center;
+  font-size: 28px;
+  margin: 20px 0;
+  color: #1f2937;
+}
+
+/* Count */
+.count {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+
+  /* fixed card columns */
+  grid-template-columns: repeat(auto-fill, 180px);
+
+  gap: 24px;
+  justify-content: start; /* center grid */
+  padding: 20px;
+}
+/* Card */
+.card {
+  width: 180px;
+  height: 180px;
+
+  box-sizing: border-box;
+
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Header */
+.card-header h3 {
+  margin: 0;
+  font-size: 15px;
+  color: #111827;
+}
+
+/* Body */
+.card-body p {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #374151;
+}
+
+/* Icons */
+.card-body i {
+  margin-right: 6px;
+  color: #2563eb;
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.stats i {
+  margin-right: 4px;
+}
+
+/* Footer */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+/* Buttons */
+.btn {
+  flex: 1;
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* Edit */
+.edit {
+  background: #facc15;
+  color: #000;
+}
+
+.edit:hover {
+  background: #eab308;
+}
+
+/* Delete */
+.delete {
+  background: #ef4444;
+  color: white;
+}
+
+.delete:hover {
+  background: #dc2626;
+}
+
+/* Empty */
+.empty {
+  text-align: center;
+  margin-top: 40px;
+  color: #9ca3af;
+}

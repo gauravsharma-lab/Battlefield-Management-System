@@ -1,13 +1,17 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withHashLocation } from '@angular/router';
+import { HttpInterceptorFn } from '@angular/common/http';
 
-import { routes } from './app.routes';
+export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = localStorage.getItem('token');
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideBrowserGlobalErrorListeners(),
+  if (!token) {
+    return next(req);
+  }
 
-    // ✅ Hash routing (fix refresh issue)
-    provideRouter(routes, withHashLocation())
-  ]
+  const clonedReq = req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return next(clonedReq);
 };

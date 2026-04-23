@@ -1,19 +1,113 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  createScenario,
-  getScenarios,
-  getScenarioById,
-  updateScenario,
-  deleteScenario
-} = require("../controllers/scenarioController");
+const Scenario = require("../models/Scenario");
+const authMiddleware = require("../middleware/auth");
 
-// Routes
-router.post("/", createScenario);
-router.get("/", getScenarios);
-router.get("/:id", getScenarioById);
-router.put("/:id", updateScenario);
-router.delete("/:id", deleteScenario);
+
+// ✅ CREATE SCENARIO
+router.post("/", authMiddleware, async (req, res) => {
+  try {
+
+    const scenario = new Scenario({
+      ...req.body,
+      userId: req.user.userId   // ✅ IMPORTANT FIX
+    });
+
+    await scenario.save();
+
+    res.status(201).json(scenario);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// ✅ GET USER SCENARIOS
+router.get("/", authMiddleware, async (req, res) => {
+  try {
+
+    console.log("🔥 LOGGED USER:", req.user);
+
+    const scenarios = await Scenario.find({
+      userId: req.user.userId
+    });
+
+    console.log("🔥 FOUND:", scenarios);
+
+    res.json(scenarios);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// ✅ GET SINGLE
+router.get("/:id", authMiddleware, async (req, res) => {
+  try {
+
+    const scenario = await Scenario.findOne({
+      _id: req.params.id,
+      userId: req.user.userId   // ✅ FIXED
+    })
+      .populate("friendlyAssets")
+      .populate("enemyAssets");
+
+    if (!scenario) {
+      return res.status(404).json({ message: "Scenario not found" });
+    }
+
+    res.json(scenario);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// ✅ UPDATE
+router.put("/:id", authMiddleware, async (req, res) => {
+  try {
+
+    const updated = await Scenario.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        userId: req.user.userId   // ✅ FIXED
+      },
+      req.body,
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    res.json(updated);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// ✅ DELETE
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+
+    const deleted = await Scenario.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user.userId   // ✅ FIXED
+    });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Scenario not found" });
+    }
+
+    res.json({ message: "Deleted successfully" });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;

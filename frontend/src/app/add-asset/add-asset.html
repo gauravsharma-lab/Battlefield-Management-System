@@ -5,13 +5,25 @@
   <!-- NAME -->
   <div class="form-group">
     <label>Asset Name</label>
-    <input type="text" [(ngModel)]="asset.name" name="name" placeholder="Enter asset name" required />
+    <input type="text"
+           [(ngModel)]="asset.name"
+           name="name"
+           placeholder="Enter asset name"
+           required />
   </div>
 
-  <!-- TYPE -->
+  <!-- TYPE (DROPDOWN) -->
   <div class="form-group">
     <label>Asset Type</label>
-    <input type="text" [(ngModel)]="asset.type" name="type" placeholder="fighter / bomber / radar..." />
+    <select [(ngModel)]="asset.type" name="type" required>
+      <option value="" disabled selected>Select type</option>
+      <option value="fighter">Fighter</option>
+      <option value="bomber">Bomber</option>
+      <option value="radar">Radar</option>
+      <option value="sam">SAM</option>
+      <option value="airbase">Airbase</option>
+      <option value="enemy_aircraft">Enemy Aircraft</option>
+    </select>
   </div>
 
   <!-- TEAM -->
@@ -26,46 +38,70 @@
   <!-- LATITUDE -->
   <div class="form-group">
     <label>Latitude</label>
-    <input type="number" [(ngModel)]="asset.latitude" name="latitude" placeholder="Enter latitude" />
+    <input type="number"
+           [(ngModel)]="asset.latitude"
+           name="latitude"
+           placeholder="Enter latitude" />
   </div>
 
   <!-- LONGITUDE -->
   <div class="form-group">
     <label>Longitude</label>
-    <input type="number" [(ngModel)]="asset.longitude" name="longitude" placeholder="Enter longitude" />
+    <input type="number"
+           [(ngModel)]="asset.longitude"
+           name="longitude"
+           placeholder="Enter longitude" />
   </div>
 
   <!-- SPEED -->
   <div class="form-group">
     <label>Speed (km/h)</label>
-    <input type="number" [(ngModel)]="asset.speed" name="speed" />
+    <input type="number"
+           [(ngModel)]="asset.speed"
+           name="speed"
+           placeholder="Speed" />
   </div>
 
   <!-- FUEL -->
   <div class="form-group">
     <label>Fuel (%)</label>
-    <input type="number" [(ngModel)]="asset.fuel" name="fuel" />
+    <input type="number"
+           [(ngModel)]="asset.fuel"
+           name="fuel"
+           placeholder="Fuel %" />
   </div>
 
   <!-- RADAR RANGE -->
   <div class="form-group">
     <label>Radar Range (km)</label>
-    <input type="number" [(ngModel)]="asset.radarRange" name="radarRange" />
+    <input type="number"
+           [(ngModel)]="asset.radarRange"
+           name="radarRange"
+           placeholder="Radar range" />
   </div>
 
   <!-- WEAPON RANGE -->
   <div class="form-group">
     <label>Weapon Range (km)</label>
-    <input type="number" [(ngModel)]="asset.weaponRange" name="weaponRange" />
+    <input type="number"
+           [(ngModel)]="asset.weaponRange"
+           name="weaponRange"
+           placeholder="Weapon range" />
   </div>
 
-  <!-- STATUS -->
+  <!-- STATUS (DROPDOWN) -->
   <div class="form-group">
     <label>Status</label>
-    <input type="text" [(ngModel)]="asset.status" name="status" placeholder="active / destroyed" />
+    <select [(ngModel)]="asset.status" name="status" required>
+      <option value="" disabled selected>Select status</option>
+      <option value="active">Active</option>
+      <option value="destroyed">Destroyed</option>
+      <option value="damaged">Damaged</option>
+      <option value="hidden">Hidden</option>
+    </select>
   </div>
 
   <!-- BUTTON -->
-  <button type="submit">Add Asset</button>
+  <button type="button" (click)="addAsset()">Add Asset</button>
 
 </form>

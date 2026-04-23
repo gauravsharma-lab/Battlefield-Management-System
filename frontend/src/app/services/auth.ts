@@ -25,9 +25,10 @@ export class AuthService {
   }
 
   // ✅ CHECK LOGIN (SIMPLE & STABLE)
-  isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
+isLoggedIn(): boolean {
+  if (typeof window === 'undefined') return false;
+  return !!localStorage.getItem('token');
+}
 
   // ✅ GET USER FROM TOKEN
   getUser(): any {

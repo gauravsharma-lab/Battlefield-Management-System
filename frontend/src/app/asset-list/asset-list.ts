@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../services/auth';  // adjust path if needed
+import { ChangeDetectorRef } from '@angular/core';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-asset-list',
@@ -17,52 +17,63 @@ export class AssetList implements OnInit {
   selectedAsset: any = null;
 
   constructor(
-  private http: HttpClient,
-  private auth: AuthService   // ✅ ADD THIS
-) {}
+    private api: ApiService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.loadAssets();
-  }
 
-  loadAssets() {
-  const token = this.auth.getToken();
-
-  this.http.get<any[]>('http://localhost:5000/api/assets', {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }).subscribe({
-    next: (res) => {
-      console.log("DATA 👉", res);
-      this.assets = res;
-    },
-    error: (err) => {
-      console.error("ERROR ❌", err);
-    }
-  });
-}
-  deleteAsset(id: string) {
-    this.http.delete(`http://localhost:5000/api/assets/${id}`)
-      .subscribe(() => {
-        alert("Deleted ✅");
-        this.loadAssets();
-      });
-  }
-
-  editAsset(asset: any) {
-  console.log("EDIT CLICKED 👉", asset); // 👈 ADD THIS
-  this.selectedAsset = { ...asset };
-}
-
-  updateAsset() {
-    this.http.put(
-      `http://localhost:5000/api/assets/${this.selectedAsset._id}`,
-      this.selectedAsset
-    ).subscribe(() => {
-      alert("Updated ✅");
-      this.selectedAsset = null;
+    this.api.refreshAssets$.subscribe(() => {
       this.loadAssets();
     });
   }
+
+  // ✅ FIXED
+loadAssets() {
+  this.api.getAssets().subscribe({
+    next: (res: any) => {
+      this.assets = res ?? [];
+      this.cdr.detectChanges();
+    },
+    error: (err: any) => {
+      console.error(err);
+      this.assets = [];
+    }
+  });
+}
+
+  // ✅ FIXED
+  deleteAsset(id: string) {
+    this.api.deleteAsset(id).subscribe({
+      next: () => {
+        this.loadAssets();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  editAsset(asset: any) {
+    this.selectedAsset = { ...asset };
+  }
+
+  // ✅ FIXED (IMPORTANT: you were missing API service)
+  updateAsset() {
+  this.api.updateAsset(this.selectedAsset._id, this.selectedAsset)
+    .subscribe({
+      next: (res) => {
+        console.log("Updated ✅", res);
+
+        // ✅ ALERT ADDED
+        alert("Asset updated successfully ✅");
+
+        this.selectedAsset = null;
+        this.loadAssets();
+      },
+      error: (err) => {
+        console.error("Update Error ❌", err);
+        alert("Failed to update asset ❌");
+      }
+    });
+}
 }

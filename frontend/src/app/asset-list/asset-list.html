@@ -1,21 +1,101 @@
-<h2 style="text-align:center;">Assets</h2>
+<h2 class="title">📦 Battlefield Assets</h2>
 
-<!-- DEBUG (keep temporarily) -->
-<p>{{ assets.length }}</p>
+<p class="count">Total Assets: {{ assets.length }}</p>
 
-<div class="card-container">
+<div class="grid">
 
   <div class="card" *ngFor="let asset of assets">
 
-    <h3>{{ asset.name }}</h3>
+    <div class="card-header">
+      <h3>{{ asset.name }}</h3>
 
-    <p>Type: {{ asset.type }}</p>
-    <p>Team: {{ asset.team }}</p>
-    <p>Status: {{ asset.status }}</p>
+      <span class="badge" [ngClass]="asset.team">
+        {{ asset.team }}
+      </span>
+    </div>
 
-    <button (click)="editAsset(asset)">Edit</button>
-    <button (click)="deleteAsset(asset._id)">Delete</button>
+    <div class="card-body">
+      <p><b>Type:</b> {{ asset.type }}</p>
+      <p><b>Status:</b> {{ asset.status }}</p>
 
+      <div class="stats">
+        <span>🔥 Fuel: {{ asset.fuel }}</span>
+        <span>⚡ Speed: {{ asset.speed }}</span>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="edit" (click)="editAsset(asset)">Edit</button>
+      <button class="delete" (click)="deleteAsset(asset._id)">Delete</button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- EDIT PANEL -->
+<div class="edit-panel" *ngIf="selectedAsset">
+
+  <h3>Edit Asset ✏️</h3>
+
+  <!-- NAME -->
+  <input type="text"
+         [(ngModel)]="selectedAsset.name"
+         name="editName"
+         placeholder="Name" />
+
+  <!-- TYPE (DROPDOWN) -->
+  <select [(ngModel)]="selectedAsset.type" name="editType">
+    <option value="fighter">Fighter</option>
+    <option value="bomber">Bomber</option>
+    <option value="radar">Radar</option>
+    <option value="sam">SAM</option>
+    <option value="airbase">Airbase</option>
+    <option value="enemy_aircraft">Enemy Aircraft</option>
+  </select>
+
+  <!-- TEAM -->
+  <select [(ngModel)]="selectedAsset.team" name="editTeam">
+    <option value="friendly">Friendly</option>
+    <option value="enemy">Enemy</option>
+  </select>
+
+  <!-- LAT -->
+  <input type="number"
+         [(ngModel)]="selectedAsset.latitude"
+         name="editLat"
+         placeholder="Latitude" />
+
+  <!-- LNG -->
+  <input type="number"
+         [(ngModel)]="selectedAsset.longitude"
+         name="editLng"
+         placeholder="Longitude" />
+
+  <!-- SPEED -->
+  <input type="number"
+         [(ngModel)]="selectedAsset.speed"
+         name="editSpeed"
+         placeholder="Speed" />
+
+  <!-- FUEL -->
+  <input type="number"
+         [(ngModel)]="selectedAsset.fuel"
+         name="editFuel"
+         placeholder="Fuel" />
+
+  <!-- STATUS (DROPDOWN) -->
+  <select [(ngModel)]="selectedAsset.status" name="editStatus">
+    <option value="active">Active</option>
+    <option value="destroyed">Destroyed</option>
+    <option value="damaged">Damaged</option>
+    <option value="hidden">Hidden</option>
+  </select>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button (click)="updateAsset()">Update</button>
+    <button (click)="selectedAsset = null">Cancel</button>
   </div>
 
 </div>

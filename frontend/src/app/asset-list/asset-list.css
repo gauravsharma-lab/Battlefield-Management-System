@@ -1,81 +1,121 @@
-.card-container {
+.title {
+  text-align: center;
+  font-size: 28px;
+  margin: 20px 0;
+  color: #1f2937;
+}
+
+.count {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
   padding: 20px;
 }
 
 .card {
-  background: #1e293b;
-  color: #fff;
+  background: #ffffff;
   border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  transition: 0.2s;
-}
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transition: 0.3s;
 
+  width: 180px;        /* 🔥 small size */
+  height: 180px;       /* 🔥 makes it square */
+
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .card:hover {
   transform: translateY(-5px);
 }
 
-/* HEADER */
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.team-badge {
+.card-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.badge {
   padding: 4px 10px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: bold;
+  color: white;
 }
 
-/* COLORS */
-.team-badge.friendly {
+.badge.friendly {
   background: #16a34a;
 }
 
-.team-badge.enemy {
+.badge.enemy {
   background: #dc2626;
 }
 
-/* BODY */
-.card-body {
-  margin-top: 10px;
-  line-height: 1.6;
+.card-body p {
+  margin: 6px 0;
+  color: #374151;
 }
 
-/* BUTTONS */
-.card-actions {
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.card-footer {
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
 }
 
-.edit-btn {
-  background: #2563eb;
+button {
+  padding: 6px 12px;
   border: none;
-  padding: 8px 12px;
-  color: white;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
 }
 
-.delete-btn {
-  background: #dc2626;
-  border: none;
-  padding: 8px 12px;
+.edit {
+  background: #facc15;
+}
+
+.delete {
+  background: #ef4444;
   color: white;
-  border-radius: 6px;
-  cursor: pointer;
 }
 
-.edit-btn:hover {
-  background: #1d4ed8;
+/* EDIT PANEL */
+.edit-panel {
+  margin: 30px auto;
+  max-width: 400px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-.delete-btn:hover {
-  background: #b91c1c;
+.edit-panel input,
+.edit-panel select {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
 }

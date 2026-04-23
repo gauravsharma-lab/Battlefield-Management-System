@@ -1,61 +1,120 @@
 const Scenario = require("../models/Scenario");
 
-// CREATE
+// CREATE SCENARIO
 exports.createScenario = async (req, res) => {
   try {
     const scenario = await Scenario.create(req.body);
-    res.json(scenario);
+
+    res.status(201).json({
+      success: true,
+      message: "Scenario created successfully",
+      data: scenario,
+    });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
-// GET ALL
+// GET ALL SCENARIOS
 exports.getScenarios = async (req, res) => {
   try {
     const scenarios = await Scenario.find()
       .populate("friendlyAssets")
       .populate("enemyAssets");
 
-    res.json(scenarios);
+    res.json({
+      success: true,
+      data: scenarios,
+    });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
-// GET ONE
+// GET SINGLE SCENARIO
 exports.getScenarioById = async (req, res) => {
   try {
     const scenario = await Scenario.findById(req.params.id)
       .populate("friendlyAssets")
       .populate("enemyAssets");
 
-    res.json(scenario);
+    if (!scenario) {
+      return res.status(404).json({
+        success: false,
+        message: "Scenario not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      data: scenario,
+    });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
-// UPDATE
+// UPDATE SCENARIO
 exports.updateScenario = async (req, res) => {
   try {
     const updated = await Scenario.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      {
+        new: true,
+        runValidators: true,
+      }
     );
-    res.json(updated);
+
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: "Scenario not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Scenario updated successfully",
+      data: updated,
+    });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
-// DELETE
+// DELETE SCENARIO
 exports.deleteScenario = async (req, res) => {
   try {
-    await Scenario.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted successfully" });
+    const deleted = await Scenario.findByIdAndDelete(req.params.id);
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: "Scenario not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Scenario deleted successfully",
+    });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
